@@ -94,8 +94,30 @@ button:not(:disabled),
   color: var(--color-muted);
 }
 
+/* Trust strip: infinite logo marquee. Pauses on hover. */
+@keyframes trust-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.trust-marquee {
+  animation: trust-marquee 36s linear infinite;
+}
+
+.trust-marquee:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .trust-marquee {
+    animation: none;
   }
 }

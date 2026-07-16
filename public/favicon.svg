@@ -1,6 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="wash" cx="0.68" cy="0.5" r="0.6">
+      <stop offset="0" stop-color="#3D7BFD" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#3D7BFD" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
   <rect width="64" height="64" rx="14" fill="#070E1C"/>
-  <circle cx="32" cy="32" r="14" fill="#3D7BFD" opacity="0.14"/>
-  <circle cx="32" cy="32" r="7" fill="#3D7BFD" opacity="0.4"/>
-  <circle cx="32" cy="32" r="3.5" fill="#9CC2FF"/>
+  <rect width="64" height="64" rx="14" fill="url(#wash)"/>
+
+  <!-- Dim strands: the tangle, hinted -->
+  <path d="M-2 22 C 10 30, 18 16, 28 28 S 38 36, 43 34" stroke="#3D7BFD" stroke-opacity="0.22" stroke-width="1.5" fill="none"/>
+  <path d="M-2 48 C 12 42, 18 52, 28 42 S 38 34, 43 34" stroke="#3D7BFD" stroke-opacity="0.22" stroke-width="1.5" fill="none"/>
+
+  <!-- The bright thread resolving into the line -->
+  <path d="M-2 36 C 10 44, 18 26, 27 33 C 33 37.5, 36 34, 43 34 L 46 34" stroke="#3D7BFD" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M-2 36 C 10 44, 18 26, 27 33 C 33 37.5, 36 34, 43 34 L 46 34" stroke="#5B90FD" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Terminal point of light -->
+  <circle cx="47" cy="34" r="13" fill="#3D7BFD" opacity="0.18"/>
+  <circle cx="47" cy="34" r="7.5" fill="#3D7BFD" opacity="0.35"/>
+  <circle cx="47" cy="34" r="4" fill="#9CC2FF"/>
+  <circle cx="47" cy="34" r="2.2" fill="#FFFFFF"/>
 </svg>

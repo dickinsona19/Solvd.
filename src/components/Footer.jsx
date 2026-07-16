@@ -5,9 +5,9 @@ export default function Footer() {
         <img
           src="/solvd-wordmark.png"
           alt="SOLVD"
-          className="h-5 w-auto"
-          width="440"
-          height="90"
+          className="h-3.5 w-auto"
+          width="292"
+          height="56"
         />
         <div className="flex flex-col items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-muted sm:flex-row sm:gap-8">
           <a

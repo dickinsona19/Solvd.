@@ -28,9 +28,9 @@ export default function Header() {
           <img
             src="/solvd-wordmark.png"
             alt="SOLVD"
-            className="h-6 w-auto"
-            width="440"
-            height="90"
+            className="h-4 w-auto"
+            width="292"
+            height="56"
           />
         </a>
 
