@@ -1,4 +1,4 @@
-import { LayoutDashboard, Plug, Workflow } from 'lucide-react'
+import { LayoutDashboard, Sparkles, Workflow } from 'lucide-react'
 import FadeIn from './FadeIn'
 
 const pillars = [
@@ -17,11 +17,11 @@ const pillars = [
       'If your staff is manually copying data from emails, PDFs, or forms into your database, you are wasting payroll. We automate your pipelines so data moves instantly and accurately.',
   },
   {
-    icon: Plug,
+    icon: Sparkles,
     label: 'Pillar 3',
-    title: 'Database & API Integrations',
+    title: 'AI Automations',
     description:
-      'We write the custom middleware and APIs that force your existing, legacy software platforms to talk to each other in real-time, eliminating manual bottlenecks.',
+      'We deploy AI agents that read documents, draft responses, triage requests, and handle the judgment-based busywork your team does by hand, wired safely into your existing systems.',
   },
 ]
 

@@ -37,7 +37,7 @@ src/
     Header.jsx             # Sticky nav with mobile menu
     Hero.jsx               # Headline, CTA, local badge
     Leaks.jsx              # "Three Pillars" grid
-    ServicesSection.jsx    # Vertical tabbed stepper with pricing (desktop) / accordion (mobile)
+    ServicesSection.jsx    # Vertical tabbed stepper (desktop) / accordion (mobile)
     FounderStory.jsx       # "Proven in the Trenches" founder story + metrics
     ContactForm.jsx        # Audit request form (React state + success view)
     Footer.jsx
@@ -46,5 +46,5 @@ src/
 
 ## Notes
 
-- The contact form currently handles submission client-side and shows a success state. Wire `handleSubmit` in `ContactForm.jsx` to your backend, form service (Formspree, Netlify Forms), or CRM when ready.
+- The contact form submits via [FormSubmit](https://formsubmit.co/) and delivers to `contact@getsolvd.io`. The first submission triggers a one-time activation email to that inbox — click the confirmation link in it to start receiving entries.
 # Solvd.

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Cpu,
   LayoutDashboard,
-  Database,
+  Sparkles,
   ShieldAlert,
   ArrowRight,
 } from 'lucide-react'
@@ -18,13 +18,11 @@ const servicesData = [
       'Stop burning payroll on manual data entry, manual report creation, and copying info between systems. We build bulletproof automated pipelines that connect your tools and run your routine business operations on autopilot.',
     engagements: [
       {
-        type: '2-Week Sprint',
-        price: '$3,500 flat',
+        type: '3-Week Sprint',
         desc: 'Rapid setup. We target your single most expensive administrative bottleneck, map the business logic, and deploy automated workflows directly into your current systems.',
       },
       {
         type: 'Ongoing Retainer',
-        price: '$2,500/mo',
         desc: 'Continuous automation. We monitor your pipelines, handle third-party API changes, and continuously automate new workflows across other departments as you grow.',
       },
     ],
@@ -37,33 +35,29 @@ const servicesData = [
       'Stop letting critical operational metrics sit scattered across multiple platforms. We build clean, private internal web apps, scheduling systems, staff dashboards, and inventory tracking tools tailored to how you actually run.',
     engagements: [
       {
-        type: '4-Week Sprint',
-        price: '$6,000 flat',
+        type: '6-Week Sprint',
         desc: 'Full build & launch. We design and build a single, lightweight, mobile-responsive internal tool or custom admin portal complete with secure staff login.',
       },
       {
         type: 'Ongoing Retainer',
-        price: '$3,500/mo',
         desc: 'Portal management. Covers server hosting maintenance, security patches, role-based permission updates, and dedicated bandwidth to build out new features.',
       },
     ],
   },
   {
     id: '03',
-    title: 'Database & API Integrations',
-    icon: Database,
+    title: 'AI Automations',
+    icon: Sparkles,
     description:
-      'Siloed data is a quiet business killer. We build custom middleware, unified databases, and APIs that force your scheduling, CRM, billing, and customer tracking platforms to talk to each other in real-time.',
+      'Your team spends hours on work that requires reading and judgment, not just clicks. We deploy AI agents that summarize documents, draft emails and quotes, triage inbound requests, and extract data from messy files, all connected safely to your existing systems.',
     engagements: [
       {
-        type: '3-Week Sprint',
-        price: '$4,500 flat',
-        desc: 'Integration sprint. We link your two primary software systems, clean up legacy data sync lags, and verify complete end-to-end data accuracy.',
+        type: '4-Week Sprint',
+        desc: 'AI pilot sprint. We identify your highest-value AI use case, build and deploy a production-ready AI workflow, and train your staff to work alongside it.',
       },
       {
         type: 'Ongoing Retainer',
-        price: '$3,000/mo',
-        desc: 'Database & Sync protection. Includes real-time replication monitoring, continuous automatic database backups, and instant fixes if an external API breaks.',
+        desc: 'AI operations. Includes accuracy monitoring, prompt and model tuning as your business changes, and rollout of new AI workflows across additional departments.',
       },
     ],
   },
@@ -76,12 +70,10 @@ const servicesData = [
     engagements: [
       {
         type: 'Strategic Audit',
-        price: '$3,000 flat',
         desc: 'Deep-dive evaluation. We audit your existing business systems, identify security risks and hidden billing leaks, and deliver a clean, build-ready technical roadmap.',
       },
       {
         type: 'Fractional CTO',
-        price: 'From $4,000/mo',
         desc: 'Ongoing leadership. Guaranteed weekly advisory hours, technical architecture planning, system oversight, and on-demand software engineering.',
       },
     ],
@@ -95,16 +87,11 @@ function EngagementCard({ engagement, compact = false }) {
         compact ? 'p-4' : 'p-5'
       }`}
     >
-      <div className="mb-2 flex items-baseline justify-between gap-3">
-        <h4
-          className={`font-semibold text-ink ${compact ? 'text-xs' : 'text-sm sm:text-base'}`}
-        >
-          {engagement.type}
-        </h4>
-        <span className="whitespace-nowrap rounded-full bg-sky-400/10 px-2 py-0.5 font-mono text-xs font-medium text-sky-400">
-          {engagement.price}
-        </span>
-      </div>
+      <h4
+        className={`mb-2 font-semibold text-ink ${compact ? 'text-xs' : 'text-sm sm:text-base'}`}
+      >
+        {engagement.type}
+      </h4>
       <p
         className={`leading-relaxed text-mist ${compact ? 'text-[11px]' : 'text-xs'}`}
       >

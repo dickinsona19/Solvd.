@@ -1,40 +1,10 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, MapPin } from 'lucide-react'
-
-/* Editorial stacked headline — alternating emphasis per line,
-   revealed one line at a time. */
-const headlineLines = [
-  { text: 'We engineer', tone: 'ink' },
-  { text: 'the internal systems', tone: 'muted' },
-  { text: 'that run your business', tone: 'muted' },
-  { text: 'on autopilot.', tone: 'accent' },
-]
-
-const toneClasses = {
-  ink: 'text-ink',
-  muted: 'text-slate-500',
-  accent:
-    'bg-gradient-to-r from-sky-400 to-cyan-300 bg-clip-text text-transparent',
-}
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.16, delayChildren: 0.2 } },
-}
-
-const line = {
-  hidden: { opacity: 0, y: 34 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
-  },
-}
+import { ArrowRight } from 'lucide-react'
 
 const fadeUp = (delay) => ({
-  initial: { opacity: 0, y: 24 },
+  initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] },
+  transition: { duration: 0.6, delay, ease: [0.21, 0.47, 0.32, 0.98] },
 })
 
 /* Thin flowing strokes sweeping across the hero, drawn in on load. */
@@ -82,65 +52,48 @@ export default function Hero() {
       />
       <FlowLines />
 
-      <div className="container relative mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-8 sm:pb-24 sm:pt-24">
-        <div className="max-w-4xl">
-          {/* Glass pill badge */}
-          <motion.div {...fadeUp(0.05)}>
-            <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-slate-700/40 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-mist shadow-[inset_0_1px_0_rgba(248,250,252,0.06)] backdrop-blur-md sm:text-sm">
-              <MapPin size={14} className="text-sky-400" />
-              Serving local businesses in Charlotte, NC and surrounding areas
-            </div>
-          </motion.div>
-
-          {/* Stacked editorial headline */}
-          <motion.h1
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            className="font-display text-5xl font-bold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl"
+      <div className="container relative mx-auto max-w-6xl px-5 pb-20 pt-20 sm:px-8 sm:pb-24 sm:pt-28">
+        <div className="max-w-3xl">
+          <motion.p
+            {...fadeUp(0)}
+            className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400"
           >
-            {headlineLines.map((l) => (
-              <span key={l.text} className="block overflow-hidden pb-1">
-                <motion.span
-                  variants={line}
-                  className={`block ${toneClasses[l.tone]}`}
-                >
-                  {l.text}
-                </motion.span>
-              </span>
-            ))}
+            Software studio &mdash; Charlotte, NC
+          </motion.p>
+
+          <motion.h1
+            {...fadeUp(0.1)}
+            className="font-display text-balance text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-6xl"
+          >
+            We build the software your business actually runs on.
           </motion.h1>
 
           <motion.p
-            {...fadeUp(0.95)}
-            className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-mist sm:text-lg"
+            {...fadeUp(0.25)}
+            className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-mist sm:text-lg"
           >
-            No off-the-shelf software that almost fits. No duct-taped
-            spreadsheets. We design and build the internal software your
-            business actually runs on — custom tools, dashboards, and
-            automations engineered around your exact operations.
+            Internal tools, automations, and AI workflows built around how your
+            operation works &mdash; not another subscription you have to bend
+            your business around.
           </motion.p>
 
           <motion.div
-            {...fadeUp(1.15)}
+            {...fadeUp(0.4)}
             className="mt-10 flex flex-col items-start gap-7 sm:flex-row sm:items-center"
           >
-            {/* Primary CTA — solid cyan with hover glow */}
-            <a href="#audit" className="group relative w-full sm:w-auto">
-              <span
-                aria-hidden="true"
-                className="absolute -inset-0.5 rounded-xl bg-sky-400 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-50"
+            {/* Primary CTA */}
+            <a
+              href="#audit"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-400 px-7 py-4 text-base font-semibold text-slate-950 transition-colors duration-300 hover:bg-sky-300 sm:w-auto"
+            >
+              Let's get your problem Solvd.
+              <ArrowRight
+                size={18}
+                className="transition-transform group-hover:translate-x-1"
               />
-              <span className="relative inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-400 px-7 py-4 text-base font-semibold text-slate-950 transition-colors duration-300 group-hover:bg-sky-300 sm:w-auto">
-                Let's get your problem Solvd.
-                <ArrowRight
-                  size={18}
-                  className="transition-transform group-hover:translate-x-1"
-                />
-              </span>
             </a>
 
-            {/* Secondary CTA — understated editorial link */}
+            {/* Secondary CTA */}
             <a
               href="#leaks"
               className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-400 transition-colors hover:text-sky-300"

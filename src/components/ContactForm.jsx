@@ -36,18 +36,45 @@ function Field({ label, optional, children }) {
   )
 }
 
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/contact@getsolvd.io'
+
 export default function ContactForm() {
   const [form, setForm] = useState(initialForm)
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const submitted = status === 'success'
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
+    setStatus('sending')
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `New leaks audit request from ${form.business}`,
+          _template: 'table',
+          name: form.name,
+          business: form.business,
+          website: form.website || 'Not provided',
+          email: form.email,
+          headache:
+            headacheOptions.find((o) => o.value === form.headache)?.label ??
+            form.headache,
+        }),
+      })
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+      setStatus('success')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -174,14 +201,31 @@ export default function ContactForm() {
 
                     <button
                       type="submit"
-                      className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-400 px-6 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-sky-300 hover:shadow-[0_0_36px_rgba(56,189,248,0.4)]"
+                      disabled={status === 'sending'}
+                      className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-400 px-6 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-sky-300 hover:shadow-[0_0_36px_rgba(56,189,248,0.4)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-sky-400 disabled:hover:shadow-none"
                     >
-                      Let's get your problem Solvd.
+                      {status === 'sending'
+                        ? 'Sending…'
+                        : "Let's get your problem Solvd."}
                       <Send
                         size={17}
                         className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       />
                     </button>
+
+                    {status === 'error' && (
+                      <p className="text-center text-xs text-red-400">
+                        Something went wrong sending your request. Please try
+                        again, or email us directly at{' '}
+                        <a
+                          href="mailto:contact@getsolvd.io"
+                          className="underline"
+                        >
+                          contact@getsolvd.io
+                        </a>
+                        .
+                      </p>
+                    )}
 
                     <p className="flex items-center justify-center gap-1.5 text-center text-xs text-mist">
                       <ShieldCheck size={14} className="text-sky-400/80" />
