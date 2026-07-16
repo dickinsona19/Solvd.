@@ -1,19 +1,20 @@
-import { MapPin } from 'lucide-react'
-
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 py-10">
+    <footer className="pb-10 pt-4">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 sm:flex-row sm:px-8">
-        <p className="font-display text-lg font-bold tracking-tight text-ink">
-          Solvd<span className="text-sky-400">.</span>
+        <p className="text-base font-semibold tracking-[-0.02em] text-ink">
+          SOLVD
         </p>
-        <p className="flex items-center gap-1.5 text-xs text-mist">
-          <MapPin size={13} className="text-sky-400/80" />
-          Charlotte, NC &amp; surrounding areas
-        </p>
-        <p className="text-xs text-mist">
-          &copy; {new Date().getFullYear()} Solvd. All rights reserved.
-        </p>
+        <div className="flex flex-col items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted sm:flex-row sm:gap-8">
+          <a
+            href="mailto:contact@getsolvd.io"
+            className="transition-colors duration-150 hover:text-ink"
+          >
+            contact@getsolvd.io
+          </a>
+          <p>Charlotte, NC</p>
+          <p>&copy; {new Date().getFullYear()} SOLVD</p>
+        </div>
       </div>
     </footer>
   )

@@ -1,13 +1,14 @@
 import Background from './components/Background'
 import Header from './components/Header'
 import Hero from './components/Hero'
-import TrustBar from './components/TrustBar'
-import Leaks from './components/Leaks'
+import Problem from './components/Problem'
 import ServicesSection from './components/ServicesSection'
-import FounderStory from './components/FounderStory'
+import CaseStudy from './components/CaseStudy'
+import WhySolvd from './components/WhySolvd'
+import TrustBar from './components/TrustBar'
+import LocalStrip from './components/LocalStrip'
 import ContactForm from './components/ContactForm'
 import Footer from './components/Footer'
-import SectionDivider from './components/SectionDivider'
 
 export default function App() {
   return (
@@ -17,13 +18,11 @@ export default function App() {
       <main>
         <Hero />
         <TrustBar />
-        <SectionDivider />
-        <Leaks />
-        <SectionDivider />
+        <Problem />
         <ServicesSection />
-        <SectionDivider />
-        <FounderStory />
-        <SectionDivider />
+        <CaseStudy />
+        <WhySolvd />
+        <LocalStrip />
         <ContactForm />
       </main>
       <Footer />
