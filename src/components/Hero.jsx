@@ -248,10 +248,10 @@ export default function Hero() {
             Book an AI Systems Audit
           </a>
           <a
-            href="#case-study"
+            href="#services"
             className="group inline-flex items-center justify-center gap-2 px-2 py-3.5 font-medium text-body transition-colors duration-150 hover:text-signal"
           >
-            See our work
+            See what we do
             <ArrowRight
               size={16}
               className="transition-transform duration-150 group-hover:translate-x-0.5"
