@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import {
   motion,
@@ -8,6 +8,34 @@ import {
 } from 'framer-motion'
 import HeroThread from './thread/HeroThread'
 import SolvdWordmark from './SolvdWordmark'
+
+/**
+ * Measure resting wordmark width, then pick an intro scale.
+ * The brand mark is a PNG (~292px) — keep intro scale modest so it
+ * stays sharp (big CSS scale = soft edges).
+ */
+function useIntroLogoScale(reduce, maxScale = 1.35, maxViewportShare = 0.55) {
+  const markRef = useRef(null)
+  const [scale, setScale] = useState(reduce ? 1 : null)
+
+  useLayoutEffect(() => {
+    if (reduce) {
+      setScale(1)
+      return undefined
+    }
+    const el = markRef.current
+    if (!el) return undefined
+
+    const natural = el.offsetWidth
+    if (!natural) return undefined
+    const pad = 40
+    const maxW = Math.max(160, window.innerWidth * maxViewportShare - pad)
+    setScale(Math.min(maxScale, maxW / natural))
+    return undefined
+  }, [reduce, maxScale, maxViewportShare])
+
+  return { markRef, scale, ready: scale != null }
+}
 
 /*
  * Timeline (seconds):
@@ -33,6 +61,33 @@ const HERO_T = {
   ctas: 4.5,
 }
 
+/* Mobile: same choreography, text block starts ~0.45s earlier */
+const HERO_T_MOBILE = {
+  ...HERO_T,
+  headline: 3.1,
+  perLetter: 0.012,
+  letterDur: 0.45,
+  underline: 3.7,
+  subline: 3.8,
+  ctas: 3.95,
+}
+
+function useHeroTiming() {
+  const [mobile, setMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 640,
+  )
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)')
+    const update = () => setMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  return mobile ? HERO_T_MOBILE : HERO_T
+}
+
 const HEADLINE = [
   { text: 'AI that actually' },
   { text: 'ships', accent: true },
@@ -44,89 +99,51 @@ const HEADLINE_PLAIN = 'AI that actually ships inside your systems.'
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]
 const SPRING_SHRINK = { type: 'spring', stiffness: 70, damping: 16, mass: 0.9 }
 
-function HeroLogo({ reduce }) {
-  return (
-    <div className="relative mx-auto flex h-[min(18vw,88px)] items-center justify-center sm:h-[72px]">
-      {/* Soft signal wash behind the mark during the intro */}
-      {!reduce && (
-        <motion.span
-          aria-hidden="true"
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: [0, 0.55, 0.2], scale: [0.6, 1.15, 1] }}
-          transition={{
-            duration: 1.4,
-            delay: HERO_T.logoLetter,
-            ease: 'easeOut',
-            times: [0, 0.45, 1],
-          }}
-          className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-[min(80vw,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(61,123,253,0.35),transparent_70%)]"
-        />
-      )}
+function HeroLogo({ reduce, t }) {
+  const { markRef, scale: introScale, ready } = useIntroLogoScale(reduce)
 
+  return (
+    <div className="relative mx-auto w-full max-w-[min(78vw,22rem)] sm:max-w-[min(100%,26rem)]">
       <motion.div
         className="relative origin-center"
-        initial={reduce ? false : { scale: 2.8 }}
-        animate={{ scale: 1 }}
+        key={ready ? 'logo-intro' : 'logo-measure'}
+        initial={
+          reduce || !ready ? false : { scale: introScale, opacity: 0 }
+        }
+        animate={{ scale: 1, opacity: 1 }}
         transition={
-          reduce
+          reduce || !ready
             ? { duration: 0 }
             : {
-                ...SPRING_SHRINK,
-                delay: HERO_T.logoShrink,
+                opacity: {
+                  duration: 0.45,
+                  delay: t.logoLetter,
+                  ease: 'easeOut',
+                },
+                scale: {
+                  ...SPRING_SHRINK,
+                  delay: t.logoShrink,
+                },
               }
         }
       >
-        <SolvdWordmark
-          className="text-[clamp(2.75rem,8vw,4.25rem)]"
-          renderLetter={(letter, i) => (
-            <motion.span
-              key={letter}
-              className="inline-block overflow-hidden"
-              style={{ marginRight: i === 4 ? '-0.2em' : undefined }}
-            >
-              <motion.span
-                className="inline-block"
-                initial={reduce ? false : { y: '120%', opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  duration: HERO_T.logoLetterDur,
-                  delay: reduce
-                    ? 0
-                    : HERO_T.logoLetter + i * HERO_T.logoLetterStagger,
-                  ease: EASE_OUT_EXPO,
-                }}
-              >
-                {letter}
-              </motion.span>
-            </motion.span>
-          )}
-        />
+        {/* Official brand PNG — same asset as the header */}
+        <div ref={markRef} className={ready ? undefined : 'opacity-0'}>
+          <SolvdWordmark className="mx-auto h-[clamp(1.75rem,5.5vw,3.25rem)] w-auto select-none" />
+        </div>
 
-        {/* Signal underline draws under the wordmark */}
-        <motion.span
-          aria-hidden="true"
-          initial={reduce ? false : { scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{
-            duration: 0.7,
-            delay: reduce ? 0 : HERO_T.logoUnderline,
-            ease: [0.3, 0, 0.2, 1],
-          }}
-          className="mx-auto mt-3 block h-[2px] w-[92%] origin-left bg-signal [filter:drop-shadow(0_0_8px_rgba(61,123,253,0.55))]"
-        />
-
-        {/* Light comet that rides the underline as it draws */}
-        {!reduce && (
+        {/* Underline sits clearly below the mark — never through letters */}
+        {ready && (
           <motion.span
             aria-hidden="true"
-            initial={{ left: '4%', opacity: 0 }}
-            animate={{ left: '96%', opacity: [0, 1, 1, 0] }}
+            initial={reduce ? false : { scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
             transition={{
               duration: 0.7,
-              delay: HERO_T.logoUnderline,
+              delay: reduce ? 0 : t.logoUnderline,
               ease: [0.3, 0, 0.2, 1],
             }}
-            className="absolute bottom-[-2px] h-2 w-2 -translate-x-1/2 rounded-full bg-signal-core [filter:drop-shadow(0_0_10px_rgba(156,194,255,0.95))]"
+            className="mx-auto mt-6 block h-[2px] w-[85%] origin-left bg-signal [filter:drop-shadow(0_0_8px_rgba(61,123,253,0.55))] sm:mt-7"
           />
         )}
       </motion.div>
@@ -134,7 +151,7 @@ function HeroLogo({ reduce }) {
   )
 }
 
-function AnimatedHeadline({ reduce }) {
+function AnimatedHeadline({ reduce, t }) {
   let letterIndex = 0
 
   return (
@@ -154,7 +171,7 @@ function AnimatedHeadline({ reduce }) {
                 }`}
               >
                 {letters.map((letter, l) => {
-                  const delay = HERO_T.headline + HERO_T.perLetter * letterIndex++
+                  const delay = t.headline + t.perLetter * letterIndex++
                   return (
                     <motion.span
                       key={l}
@@ -162,7 +179,7 @@ function AnimatedHeadline({ reduce }) {
                       initial={reduce ? false : { y: '115%' }}
                       animate={{ y: 0 }}
                       transition={{
-                        duration: HERO_T.letterDur,
+                        duration: t.letterDur,
                         delay: reduce ? 0 : delay,
                         ease: EASE_OUT_EXPO,
                       }}
@@ -179,7 +196,7 @@ function AnimatedHeadline({ reduce }) {
                     animate={{ scaleX: 1 }}
                     transition={{
                       duration: 0.6,
-                      delay: reduce ? 0 : HERO_T.underline,
+                      delay: reduce ? 0 : t.underline,
                       ease: [0.3, 0, 0.2, 1],
                     }}
                     className="absolute bottom-[0.06em] left-0 h-[2px] w-full origin-left bg-signal [filter:drop-shadow(0_0_7px_rgba(61,123,253,0.35))]"
@@ -197,6 +214,7 @@ function AnimatedHeadline({ reduce }) {
 
 export default function Hero() {
   const reduce = useReducedMotion()
+  const t = useHeroTiming()
   const ref = useRef(null)
 
   const { scrollYProgress } = useScroll({
@@ -219,18 +237,18 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-svh items-center overflow-hidden pt-16"
     >
-      <HeroThread y={fieldY} opacity={fieldOpacity} startAt={HERO_T.line} />
+      <HeroThread y={fieldY} opacity={fieldOpacity} startAt={t.line} />
 
       <motion.div
         style={reduce ? undefined : { y: contentY }}
         className="relative z-10 mx-auto w-full max-w-6xl px-5 py-20 text-center sm:px-8"
       >
-        <HeroLogo reduce={reduce} />
+        <HeroLogo reduce={reduce} t={t} />
 
-        <AnimatedHeadline reduce={reduce} />
+        <AnimatedHeadline reduce={reduce} t={t} />
 
         <motion.p
-          {...fadeUp(HERO_T.subline)}
+          {...fadeUp(t.subline)}
           className="mx-auto mt-8 max-w-[52ch] text-pretty leading-relaxed text-body"
         >
           Complex systems in, one working solution out: custom AI automation
@@ -238,7 +256,7 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          {...fadeUp(HERO_T.ctas)}
+          {...fadeUp(t.ctas)}
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6"
         >
           <a

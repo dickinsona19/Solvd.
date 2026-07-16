@@ -27,10 +27,16 @@ const FRONT_STRANDS = [
   'M-20 140 C 300 300, 460 120, 640 300 S 800 220, 880 200',
 ]
 
+/* Desktop: settles under the mark */
 const BRIGHT_PATH =
   'M-20 260 C 200 360, 340 120, 520 240 S 740 150, 880 200 L 1380 200'
 
+/* Mobile: same idea, but lower so it clears SOLVD instead of cutting through it */
+const BRIGHT_PATH_MOBILE =
+  'M-20 340 C 200 420, 340 260, 520 340 S 740 300, 880 320 L 1380 320'
+
 const LINE_TOP = '22.2%'
+const LINE_TOP_MOBILE = '35.5%'
 const DOT_LEFT = '95.8%'
 
 function Strands({ paths, opacityBase, reduce, delayBase }) {
@@ -135,9 +141,10 @@ export default function HeroThread({ y, opacity, startAt = 0 }) {
           </motion.g>
 
           <motion.path
-            d={BRIGHT_PATH}
+            d={BRIGHT_PATH_MOBILE}
             stroke="#3D7BFD"
             strokeWidth="1.5"
+            strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
             initial={reduce ? false : { pathLength: 0 }}
             animate={{ pathLength: 1 }}
@@ -146,6 +153,22 @@ export default function HeroThread({ y, opacity, startAt = 0 }) {
               delay: lineDelay,
               ease: [0.3, 0, 0.2, 1],
             }}
+            className="sm:hidden"
+          />
+          <motion.path
+            d={BRIGHT_PATH}
+            stroke="#3D7BFD"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            initial={reduce ? false : { pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{
+              duration: 1.4,
+              delay: lineDelay,
+              ease: [0.3, 0, 0.2, 1],
+            }}
+            className="hidden sm:block"
           />
         </motion.svg>
 
@@ -168,11 +191,29 @@ export default function HeroThread({ y, opacity, startAt = 0 }) {
                 ease: 'easeInOut',
                 times: [0, 0.15, 0.85, 1],
               }}
-              style={{ top: LINE_TOP }}
-              className="absolute h-[2px] w-24 -translate-x-full -translate-y-1/2 bg-gradient-to-r from-transparent to-signal-core/70"
+              className="absolute top-[35.5%] h-[2px] w-24 -translate-x-full -translate-y-1/2 bg-gradient-to-r from-transparent to-signal-core/70 sm:top-[22.2%]"
             />
           )}
 
+          {/* Mobile terminal — below the mark */}
+          <motion.span
+            initial={reduce ? false : { opacity: 0 }}
+            animate={reduce ? { opacity: 1 } : { opacity: [0.45, 1, 0.45] }}
+            transition={
+              reduce
+                ? undefined
+                : {
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: dotDelay,
+                    ease: 'easeInOut',
+                  }
+            }
+            style={{ top: LINE_TOP_MOBILE, left: DOT_LEFT }}
+            className="absolute h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal-core [filter:drop-shadow(0_0_12px_rgba(156,194,255,0.9))] sm:hidden"
+          />
+
+          {/* Desktop terminal */}
           <motion.span
             initial={reduce ? false : { opacity: 0 }}
             animate={reduce ? { opacity: 1 } : { opacity: [0.45, 1, 0.45] }}
@@ -187,7 +228,7 @@ export default function HeroThread({ y, opacity, startAt = 0 }) {
                   }
             }
             style={{ top: LINE_TOP, left: DOT_LEFT }}
-            className="absolute h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal-core [filter:drop-shadow(0_0_12px_rgba(156,194,255,0.9))]"
+            className="absolute hidden h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal-core [filter:drop-shadow(0_0_12px_rgba(156,194,255,0.9))] sm:block"
           />
         </motion.div>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import SolvdWordmark from './SolvdWordmark'
 
 const navLinks = [{ label: 'Services', href: '#services' }]
 
@@ -21,14 +22,8 @@ export default function Header() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-        <a href="#top" className="flex items-center">
-          <img
-            src="/solvd-wordmark.png"
-            alt="SOLVD"
-            className="h-4 w-auto"
-            width="292"
-            height="56"
-          />
+        <a href="#top" className="flex items-center text-ink">
+          <SolvdWordmark className="h-4 w-auto" />
         </a>
 
         <div className="flex items-center gap-8">

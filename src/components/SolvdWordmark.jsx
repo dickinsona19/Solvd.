@@ -1,42 +1,20 @@
 /**
- * Vector SOLVD wordmark (Archivo, expanded). Stays sharp at any scale —
- * the raster PNG softens when the hero blows it up.
+ * Brand wordmark — the official PNG asset (stencil letterforms).
+ * Used at small/medium sizes. Hero intro uses a capped scale so it
+ * doesn't soft-blur when enlarged.
  */
-const LETTERS = ['S', 'O', 'L', 'V', 'D']
-
 export default function SolvdWordmark({
-  className = '',
-  letterClassName = '',
-  renderLetter,
+  className = 'h-4 w-auto',
+  alt = 'SOLVD',
 }) {
   return (
-    <span
-      aria-label="SOLVD"
-      className={`inline-flex items-baseline justify-center text-ink ${className}`}
-      style={{
-        fontFamily: 'var(--font-display)',
-        fontWeight: 300,
-        fontStretch: '125%',
-        letterSpacing: '0.2em',
-        lineHeight: 1,
-      }}
-    >
-      {LETTERS.map((letter, i) => {
-        if (renderLetter) {
-          return renderLetter(letter, i)
-        }
-        return (
-          <span
-            key={letter}
-            className={`inline-block ${letterClassName}`}
-            style={{
-              marginRight: i === LETTERS.length - 1 ? '-0.2em' : undefined,
-            }}
-          >
-            {letter}
-          </span>
-        )
-      })}
-    </span>
+    <img
+      src="/solvd-wordmark.png"
+      alt={alt}
+      width={292}
+      height={56}
+      className={className}
+      draggable={false}
+    />
   )
 }
