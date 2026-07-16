@@ -1,46 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  /* Background layers, blue-tinted. Depth via steps, never shadows */
-  --color-base: #f1f6fb;
-  --color-surface: #ffffff;
-  --color-surface-2: #e7eff7;
+  /* Surfaces: layered navy, sampled from the brand artwork */
+  --color-void: #070e1c;
+  --color-panel: #0d1728;
+  --color-panel-2: #132036;
 
-  /* Hairline borders */
-  --color-border: #d9e4ef;
-  --color-border-strong: #c0d2e2;
+  /* Lines */
+  --color-line: #1b2a42;
+  --color-line-strong: #2a3d5c;
 
   /* Text */
-  --color-ink: #0f172a;
-  --color-ink-2: #1e293b;
-  --color-body: #43586c;
-  --color-muted: #5b7189;
+  --color-ink: #eaf0f8;
+  --color-body: #a3b2c7;
+  --color-muted: #66758c;
 
-  /* Accent: one committed blue */
-  --color-accent: #0369a1;
-  --color-accent-hover: #075985;
-  --color-accent-2: #1e40af;
+  /* The signal: the entire accent budget */
+  --color-signal: #3d7bfd;
+  --color-signal-core: #9cc2ff;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular,
-    Menlo, monospace;
+  --font-display: "Archivo", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html {
   scroll-behavior: smooth;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
-  background-color: var(--color-base);
+  background-color: var(--color-void);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 1.0625rem; /* dark-theme legibility floor */
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background-color: rgba(3, 105, 161, 0.18);
+  background-color: rgba(61, 123, 253, 0.24);
 }
 
 button:not(:disabled),
@@ -49,9 +49,49 @@ button:not(:disabled),
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-signal);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Type scale: Archivo display voices (never below 2rem) */
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 275;
+  font-stretch: 120%;
+  letter-spacing: 0.01em;
+  font-size: clamp(2.75rem, 7.5vw, 5.5rem);
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 350;
+  font-stretch: 115%;
+  letter-spacing: 0.01em;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.stat-figure {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-stretch: 115%;
+  letter-spacing: 0.01em;
+  font-size: clamp(5.5rem, 15vw, 12rem);
+  line-height: 1;
+}
+
+/* Mono annotation voice */
+.label-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-muted);
 }
 
 @media (prefers-reduced-motion: reduce) {

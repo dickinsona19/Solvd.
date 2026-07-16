@@ -34,23 +34,27 @@ Then open the printed local URL (defaults to http://localhost:5173).
 ```
 src/
   App.jsx                  # Page assembly (section order matters)
-  index.css                # Tailwind + design tokens (source: DESIGN.md)
+  index.css                # Tailwind + design tokens + type scale (source: DESIGN.md)
   hooks/
     useCountUp.js          # IntersectionObserver count-up (reduced-motion aware)
   components/
-    Header.jsx             # Sticky nav with mobile menu
-    Hero.jsx               # Thesis headline + CTAs
+    thread/                # The signature system: one line, one journey
+      HeroThread.jsx       # Tangle resolving to a line, draws on load
+      TangleThread.jsx     # Densest tangle, behind the problem statement
+      StrandThread.jsx     # Scroll-drawn vertical strand (Services -> Case study)
+      TerminalPoint.jsx    # The point of light beside the final CTA
+    Header.jsx             # Transparent -> blurred-void nav, no hamburger
+    Hero.jsx               # Thesis headline + CTAs + hero thread
     Problem.jsx            # Integration-layer bridge statement
     ServicesSection.jsx    # AI Systems Audit spearhead + capabilities row
-    CaseStudy.jsx          # "0 → 400" signature moment
-    WhySolvd.jsx           # Two-discipline capability cards
+    CaseStudy.jsx          # "0 → 400" with thread-drawn underline
+    WhySolvd.jsx           # Two capability panels, thread connector
     TrustBar.jsx           # Quiet mono brand strip
     LocalStrip.jsx         # One-line Charlotte trust signal
-    ContactForm.jsx        # Audit booking form (FormSubmit)
+    ContactForm.jsx        # 3-field audit form (FormSubmit) + terminal point
     Footer.jsx
-    Eyebrow.jsx            # Mono section label
     FadeIn.jsx             # Scroll fade-in wrapper (reduced-motion aware)
-    Background.jsx         # Base color + faint masked grid
+    Background.jsx         # The void + film grain
 ```
 
 ## Notes

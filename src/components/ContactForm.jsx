@@ -2,26 +2,16 @@ import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
 import FadeIn from './FadeIn'
-
-const focusOptions = [
-  { value: '', label: 'What should AI take off your team\u2019s plate?' },
-  { value: 'data-entry', label: 'Manual data entry & document handling' },
-  { value: 'communication', label: 'Customer communication & follow-ups' },
-  { value: 'reporting', label: 'Reporting & internal visibility' },
-  { value: 'unsure', label: 'Not sure yet, that\u2019s what the audit is for' },
-  { value: 'other', label: 'Other' },
-]
+import TerminalPoint from './thread/TerminalPoint'
 
 const initialForm = {
   name: '',
-  business: '',
-  website: '',
   email: '',
   focus: '',
 }
 
 const inputClasses =
-  'w-full rounded-lg border border-border bg-surface px-4 py-3.5 text-sm text-ink placeholder:text-muted outline-none transition-colors duration-150 focus:border-border-strong focus-visible:outline-2 focus-visible:outline-accent'
+  'w-full rounded-md border border-line bg-panel px-4 py-3.5 text-sm text-ink placeholder:text-muted outline-none transition-colors duration-150 focus:border-line-strong'
 
 function Field({ label, optional, children }) {
   return (
@@ -61,15 +51,11 @@ export default function ContactForm() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          _subject: `New AI Systems Audit request from ${form.business}`,
+          _subject: `New AI Systems Audit request from ${form.name}`,
           _template: 'table',
           name: form.name,
-          business: form.business,
-          website: form.website || 'Not provided',
           email: form.email,
-          focus:
-            focusOptions.find((o) => o.value === form.focus)?.label ??
-            form.focus,
+          focus: form.focus || 'Not provided',
         }),
       })
       if (!res.ok) throw new Error(`Request failed: ${res.status}`)
@@ -80,14 +66,17 @@ export default function ContactForm() {
   }
 
   return (
-    <section id="audit" className="scroll-mt-16 py-24 sm:py-32">
+    <section id="audit" className="scroll-mt-16 py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-xl">
+          {/* The thread arrives and ends here */}
+          <TerminalPoint />
+
           <FadeIn>
-            <h2 className="text-center text-balance font-semibold tracking-[-0.02em] text-ink [font-size:clamp(2rem,4vw,3rem)]">
+            <h2 className="display mt-8 text-center text-ink">
               Find out what AI is actually worth to your operation
             </h2>
-            <p className="mx-auto mt-5 max-w-[50ch] text-center text-pretty leading-relaxed text-body">
+            <p className="mx-auto mt-5 max-w-[52ch] text-center text-pretty leading-relaxed text-body">
               Fixed scope, three weeks, one prioritized roadmap. Tell us a
               little about your operation and we&rsquo;ll come back within one
               business day.
@@ -95,7 +84,7 @@ export default function ContactForm() {
           </FadeIn>
 
           <FadeIn delay={0.12} className="mt-12">
-            <div className="rounded-2xl border border-border bg-surface p-6 sm:p-9">
+            <div className="rounded-xl border border-line bg-panel p-6 sm:p-9">
               <AnimatePresence mode="wait">
                 {submitted ? (
                   <motion.div
@@ -122,43 +111,19 @@ export default function ContactForm() {
                     onSubmit={handleSubmit}
                     className="space-y-5"
                   >
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      <Field label="Name">
-                        <input
-                          type="text"
-                          name="name"
-                          required
-                          value={form.name}
-                          onChange={handleChange}
-                          placeholder="Jane Smith"
-                          className={inputClasses}
-                        />
-                      </Field>
-                      <Field label="Company">
-                        <input
-                          type="text"
-                          name="business"
-                          required
-                          value={form.business}
-                          onChange={handleChange}
-                          placeholder="Queen City Logistics"
-                          className={inputClasses}
-                        />
-                      </Field>
-                    </div>
-
-                    <Field label="Website" optional>
+                    <Field label="Name">
                       <input
-                        type="url"
-                        name="website"
-                        value={form.website}
+                        type="text"
+                        name="name"
+                        required
+                        value={form.name}
                         onChange={handleChange}
-                        placeholder="https://yourcompany.com"
+                        placeholder="Jane Smith"
                         className={inputClasses}
                       />
                     </Field>
 
-                    <Field label="Email">
+                    <Field label="Work email">
                       <input
                         type="email"
                         name="email"
@@ -170,33 +135,21 @@ export default function ContactForm() {
                       />
                     </Field>
 
-                    <Field label="Where does your team lose the most time?">
-                      <select
+                    <Field label="Where does your team lose the most time?" optional>
+                      <input
+                        type="text"
                         name="focus"
-                        required
                         value={form.focus}
                         onChange={handleChange}
-                        className={`${inputClasses} appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')] bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-11 ${
-                          form.focus === '' ? 'text-muted' : ''
-                        }`}
-                      >
-                        {focusOptions.map((opt) => (
-                          <option
-                            key={opt.value}
-                            value={opt.value}
-                            disabled={opt.value === ''}
-                            className="bg-surface text-ink"
-                          >
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder="Retyping orders from email into our ERP"
+                        className={inputClasses}
+                      />
                     </Field>
 
                     <button
                       type="submit"
                       disabled={status === 'sending'}
-                      className="inline-flex w-full items-center justify-center rounded-lg bg-accent px-6 py-4 text-base font-semibold text-white transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-accent"
+                      className="inline-flex w-full items-center justify-center rounded-md bg-ink px-6 py-4 font-medium text-void transition-colors duration-150 hover:bg-white disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-ink"
                     >
                       {status === 'sending'
                         ? 'Sending…'
@@ -217,8 +170,8 @@ export default function ContactForm() {
                       </p>
                     )}
 
-                    <p className="text-center font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted">
-                      No spam. No sales pressure. A straight answer.
+                    <p className="label-mono text-center">
+                      An engineer reads every request and replies personally.
                     </p>
                   </motion.form>
                 )}

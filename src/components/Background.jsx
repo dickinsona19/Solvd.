@@ -1,27 +1,21 @@
 /**
- * Site-wide environment: blue-tinted base with a soft light-blue wash from
- * the top and a single faint engineering grid. CSS only, fixed behind all
- * content.
+ * The void: matte navy with a subtle film grain (SVG turbulence, <=3%
+ * opacity, blended) to match the photographic texture of the brand artwork.
+ * Fixed behind all content. Nothing else lives here; the thread is its own
+ * system.
  */
+
+const GRAIN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+
 export default function Background() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 bg-base"
+      className="pointer-events-none fixed inset-0 -z-10 bg-void"
     >
-      {/* Light blue ambient wash */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(3,105,161,0.09),transparent_65%)]" />
-
-      {/* Faint engineering grid, fading toward the edges */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(15,23,42,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.6) 1px, transparent 1px)',
-          backgroundSize: '72px 72px',
-          maskImage:
-            'radial-gradient(ellipse 90% 70% at 50% 0%, black, transparent)',
-        }}
+        className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
+        style={{ backgroundImage: GRAIN }}
       />
     </div>
   )

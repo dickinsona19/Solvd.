@@ -1,14 +1,15 @@
 import Background from './components/Background'
 import Header from './components/Header'
 import Hero from './components/Hero'
+import TrustBar from './components/TrustBar'
 import Problem from './components/Problem'
 import ServicesSection from './components/ServicesSection'
 import CaseStudy from './components/CaseStudy'
 import WhySolvd from './components/WhySolvd'
-import TrustBar from './components/TrustBar'
 import LocalStrip from './components/LocalStrip'
 import ContactForm from './components/ContactForm'
 import Footer from './components/Footer'
+import StrandThread from './components/thread/StrandThread'
 
 export default function App() {
   return (
@@ -19,8 +20,12 @@ export default function App() {
         <Hero />
         <TrustBar />
         <Problem />
+        {/* Services carries the thread as its delivery rail; the strand
+            resumes down the left margin into the case study */}
         <ServicesSection />
-        <CaseStudy />
+        <StrandThread>
+          <CaseStudy />
+        </StrandThread>
         <WhySolvd />
         <LocalStrip />
         <ContactForm />
